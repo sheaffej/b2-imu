@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REPO_NAME=minimu9
+REPO_NAME=b2-imu
 
 DOCKER_IMAGE=sheaffej/${REPO_NAME}
 ROS_MASTER_URI=http://docker-server:11311/
