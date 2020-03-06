@@ -61,3 +61,5 @@ RUN apt update \
 && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV QT_X11_NO_MITSHM 1
+
+COPY ./calibration/RTIMULib.ini .ros/
