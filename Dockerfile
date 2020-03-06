@@ -49,4 +49,15 @@ RUN echo "source /entrypoint.sh" >> .bashrc
 ENTRYPOINT [ "/entrypoint.sh" ]
 CMD [ "bash" ]
 
+RUN apt update \
+&& apt install -y \
+   qt4-default \
+&& cd RTIMULib2 \
+&& mkdir build \
+&& cd build \
+&& cmake .. \
+&& make \
+&& make install \
+&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+ENV QT_X11_NO_MITSHM 1
