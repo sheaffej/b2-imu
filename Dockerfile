@@ -52,7 +52,7 @@ CMD [ "bash" ]
 RUN apt update \
 && apt install -y \
    qt4-default \
-&& cd RTIMULib2 \
+&& cd RTIMULib2/Linux \
 && mkdir build \
 && cd build \
 && cmake .. \
