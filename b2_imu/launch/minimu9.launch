@@ -2,6 +2,7 @@
 
 	<node pkg="i2c_imu" type="i2c_imu_node" name="i2c_imu" output="screen" >
     	<rosparam file="$(find b2_imu)/param/minimu9v5.yaml"/>		
+        <remap from="data" to="imu"/>
 	</node>        
 
 </launch>
