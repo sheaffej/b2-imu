@@ -44,11 +44,6 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
 && cd ${ROS_WS} \
 && catkin_make 
 
-COPY ./entrypoint.sh /
-RUN echo "source /entrypoint.sh" >> .bashrc
-ENTRYPOINT [ "/entrypoint.sh" ]
-CMD [ "bash" ]
-
 RUN apt update \
 && apt install -y \
    qt4-default \
@@ -63,3 +58,8 @@ RUN apt update \
 ENV QT_X11_NO_MITSHM 1
 
 COPY ./calibration/RTIMULib.ini .ros/
+
+COPY ./entrypoint.sh /
+RUN echo "source /entrypoint.sh" >> .bashrc
+ENTRYPOINT [ "/entrypoint.sh" ]
+CMD [ "bash" ]
