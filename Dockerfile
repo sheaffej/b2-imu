@@ -16,14 +16,8 @@ RUN apt update \
    ninja-build \
 && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# minimu9-ahrs
-# RUN git clone https://github.com/DavidEGrayson/minimu9-ahrs.git \
-# &&  cd minimu9-ahrs \
-# &&  make \
-# &&  make install \
-# &&  echo "i2c-bus=/dev/i2c-1" > .minimu9-ahrs \
-# &&  echo "-1633 2856 -4837 1031 1537 7805" > .minimu9-ahrs-cal
-
+# This is the fork of RTIMULib2 that has been ported to
+# the Pololu MinIMU-9 v5
 RUN git clone https://github.com/fjp/RTIMULib2.git \
 &&  cd RTIMULib2/RTIMULib \
 && mkdir build \
@@ -33,19 +27,10 @@ RUN git clone https://github.com/fjp/RTIMULib2.git \
 &&  make install
 
 ENV LD_LIBRARY_PATH /usr/local/lib
+ENV QT_X11_NO_MITSHM 1
 
-RUN mkdir -p ${ROS_WS}/src \
-&&  cd ${ROS_WS}/src \
-&&  git clone https://github.com/jeskesen/i2c_imu.git
-
-RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
-&& cd ${ROS_WS}/src \
-&& catkin_init_workspace \
-&& cd ${ROS_WS} \
-&& catkin_make 
-
-RUN apt update \
-&& apt install -y \
+RUN apt-get update \
+&& apt-get install -y \
    qt4-default \
 && cd RTIMULib2/Linux \
 && mkdir build \
@@ -55,9 +40,20 @@ RUN apt update \
 && make install \
 && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV QT_X11_NO_MITSHM 1
-
 COPY ./calibration/RTIMULib.ini .ros/
+
+RUN mkdir -p ${ROS_WS}/src \
+&&  cd ${ROS_WS}/src
+
+# Forked from https://github.com/jeskesen/i2c_imu.git
+COPY i2c_imu ${ROS_WS}/src/i2c_imu
+COPY b2_imu ${ROS_WS}/src/b2_imu
+
+RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
+&& cd ${ROS_WS}/src \
+&& catkin_init_workspace \
+&& cd ${ROS_WS} \
+&& catkin_make 
 
 COPY ./entrypoint.sh /
 RUN echo "source /entrypoint.sh" >> .bashrc

@@ -44,3 +44,6 @@ calib:
 #   AccelCalMaxX=1.084627
 #   AccelCalMaxY=1.047614
 #   AccelCalMaxZ=1.055878  
+
+# publish_euler: true
+# publish_magnetometer: true
